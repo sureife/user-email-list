@@ -1,13 +1,16 @@
 # Install
 
-```
-rails db:create
-rails db:migrate
+1. Install Docker.
 
-rails s
+2. Run
+
+```
+make app-initialise-docker
+
+make app-start
 ```
 
-`/users/'` - Users list
+http://localhost:3000/users/ - Users list
 
 # The task
 
