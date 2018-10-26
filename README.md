@@ -1,3 +1,8 @@
+# Do not fork this repo
+
+Do not create a fork and a pull request.
+Please download this repo, do some changes and push to your own repo. Public or private (bitbucket has free private repos) and send us a link.
+
 # Install
 
 1. Install Docker.
