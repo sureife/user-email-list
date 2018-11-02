@@ -20,6 +20,9 @@ app-initialise-docker:
 app-install:
 	docker-compose run --rm app bundle
 
+app-test:
+	docker-compose run --rm app rspec -fd
+
 app-db-drop:
 	docker-compose run --rm app rake db:drop
 
