@@ -1,7 +1,16 @@
 class User < ApplicationRecord
-  validates :email, uniqueness: true
+  validates :email, presence: true, uniqueness: true
+  validates_presence_of :first_name, :last_name
 
-  before_validation do
-    self.email = email.downcase!
+  def email=(val)
+    self['email'] = val.downcase if val
+  end
+
+  def customer?
+    !self.is_admin
+  end
+
+  def admin?
+    self.is_admin
   end
 end
