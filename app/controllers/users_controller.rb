@@ -21,29 +21,37 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    @user = User.create(user_params)
+    @user = User.create!(user_params)
     redirect_to @user, notice: 'User was successfully created.'
+  rescue ActiveRecord::RecordInvalid => error
+    render :new
   end
 
   # PATCH/PUT /users/1
   def update
-    @user.update(user_params)
+    @user.update!(user_params)
     redirect_to @user, notice: 'User was successfully updated.'
+  rescue ActiveRecord::RecordInvalid => error
+    render :edit
   end
 
   # DELETE /users/1
   def destroy
-    @user.destroy unless @user.is_admin?
-    redirect_to users_url, notice: 'User was successfully destroyed.'
+    redirect_to users_url, notice: 'Customers cannot be deleted' unless @user.admin?
+    if @user.destroy  
+      redirect_to users_url, notice: 'User was successfully deleted.'
+    else
+      redirect_to users_url, notice: 'User could not be deleted.'
+    end
   end
 
   private
 
   def set_user
-    @user = User.where(id: params[:id]).first
+    @user = User.find(params[:id])
   end
 
   def user_params
-    params.require(:user).permit(:email, :firstname, :last_name)
+    params.require(:user).permit(:email, :first_name, :last_name)
   end
 end
