@@ -9,6 +9,8 @@ Please download this repo, do some changes and push to your own repo. Public or 
 
 2. Run
 
+3. Add "SENTRY_DSN" to environment for error tracking
+
 ```
 make app-initialise-docker
 
