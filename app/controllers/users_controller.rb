@@ -1,9 +1,11 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
+  rescue_from ActiveRecord::RecordNotFound, with: :four_oh_four
+
   # GET /users
   def index
-    @users = User.all
+    @users = User.paginate(page: params[:page], per_page: 10)
   end
 
   # GET /users/1
@@ -21,27 +23,40 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    @user = User.create!(user_params)
-    redirect_to @user, notice: 'User was successfully created.'
+    @user = User.new(user_params)
+
+    @user.save!
+    
+    flash[:notice] = 'User was successfully created.'
+    redirect_to @user
   rescue ActiveRecord::RecordInvalid => error
+    flash.now[:error] = 'Invalid Input, Please check errors'
     render :new
   end
 
   # PATCH/PUT /users/1
   def update
     @user.update!(user_params)
-    redirect_to @user, notice: 'User was successfully updated.'
+    flash[:notice] = 'User was successfully updated.'
+    redirect_to @user
   rescue ActiveRecord::RecordInvalid => error
+    flash.now[:error] = 'Invalid Input, Please check errors'
     render :edit
   end
 
   # DELETE /users/1
   def destroy
-    redirect_to users_url, notice: 'Customers cannot be deleted' unless @user.admin?
+    
+    unless @user.admin?
+      flash[:error] = 'Customers cannot be deleted' 
+      return redirect_to users_url
+    end
     if @user.destroy  
-      redirect_to users_url, notice: 'User was successfully deleted.'
+      flash[:notice] = 'User was successfully deleted.'
+      return redirect_to users_url
     else
-      redirect_to users_url, notice: 'User could not be deleted.'
+      flash[:notice] = 'User could not be deleted.'
+      return redirect_to users_url
     end
   end
 
@@ -49,6 +64,11 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.find(params[:id])
+  end
+
+  def four_oh_four
+    flash[:error] = "User with id- #{params[:id]} - does not exist"
+    redirect_to users_url
   end
 
   def user_params

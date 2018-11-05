@@ -1,7 +1,10 @@
-<p id="notice"><%= notice %></p>
+<%= flash_messages %>
+
 
 <h1>Users</h1>
 
+
+<% if @users.any? %>
 <table>
   <thead>
     <tr>
@@ -14,17 +17,34 @@
 
   <tbody>
     <% @users.each do |user| %>
-      <tr>
-        <td><%= user.email %></td>
-        <td><%= user.first_name %></td>
-        <td><%= user.last_name %></td>
-        <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+    <tr>
+      <td>
+        <%= user.email %>
+      </td>
+      <td>
+        <%= user.first_name %>
+      </td>
+      <td>
+        <%= user.last_name %>
+      </td>
+      <td>
+        <%= link_to 'Show', user %>
+      </td>
+      <td>
+        <%= link_to 'Edit', edit_user_path(user) %>
+      </td>
+      <td>
+        <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %>
+      </td>
+    </tr>
     <% end %>
   </tbody>
 </table>
+<% else %>
+<p>No Users have been created</p>
+<% end %>
+
+<%= will_paginate @posts %>
 
 <br>
 
