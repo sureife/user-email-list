@@ -13,7 +13,7 @@ describe User, 'validation' do
 end
 
 describe User, 'methods' do
-  describe '::customer?' do
+  describe '.customer?' do
     context "when is_admin is true" do
       let (:user) { build(:user, is_admin: true) }
 
@@ -31,7 +31,7 @@ describe User, 'methods' do
     end
   end
 
-  describe '::admin?' do
+  describe '.admin?' do
     context "when is_admin is true" do
       let (:user) { build(:user, is_admin: true) }
 
